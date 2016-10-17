@@ -8,12 +8,17 @@
     [Explicit("IntegrationTests")]
     public class ReleaseNotesIntegrationTests
     {
+        // NOTE: GetReleaseNotes() still works if these aren't set.
+        string login = Environment.GetEnvironmentVariable("GitHub_Login");
+        string password = Environment.GetEnvironmentVariable("GitHub_Password");
+
+        string owner = "jcansdale";
+        string name = "TestDriven.Net-Issues";
+        int issueNumber = 61;
+
         [Test]
         public async Task GetReleaseNotes()
         {
-            var owner = "jcansdale";
-            var name = "TestDriven.Net-Issues";
-            var issueNumber = 61;
             var client = getClient();
             var releaseNotes = new ReleaseNotes(client);
 
@@ -25,9 +30,6 @@
         [Test]
         public async Task RefreshReleaseNotes()
         {
-            var owner = "jcansdale";
-            var name = "TestDriven.Net-Issues";
-            var issueNumber = 61;
             var client = getClient();
             var releaseNotes = new ReleaseNotes(client);
 
@@ -36,11 +38,9 @@
             Console.WriteLine(issue.Body);
         }
 
-        static GitHubClient getClient()
+        GitHubClient getClient()
         {
             var appName = "HubNotes";
-            var login = Environment.GetEnvironmentVariable("GitHub_Login");
-            var password = Environment.GetEnvironmentVariable("GitHub_Password");
             if (login != null && password != null)
             {
                 return new GitHubClient(new ProductHeaderValue(appName))
